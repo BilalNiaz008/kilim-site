@@ -1,5 +1,7 @@
 # Kilim for Windows — website design and launch brief
 
+Implementation update: the app is free. The customer journey is direct download → extract → run, with no checkout, account or activation. The website uses the provided public beta 0.1.0 download link; the local app source remains 0.2.0; README.md describes the free publication flow.
+
 ## Purpose and audience
 
 Help a visitor understand the desktop rug within ten seconds, decide whether their Windows PC is compatible, and download the portable beta. The audience is people who enjoy personalising their desktop, small playful utilities, textile art and open-source projects. The page should show the actual product before explaining it.
