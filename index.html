@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kilim for Windows — a rug for your desktop</title>
+  <meta name="description" content="Drag, fold and roll a rug over your Windows desktop icons. Download the free portable Windows beta, with 15 rug patterns and custom pictures.">
+  <meta property="og:title" content="Kilim for Windows — a rug for your desktop"><meta property="og:description" content="Sweep your desktop under a movable, foldable rug. Free portable Windows beta."><meta property="og:type" content="website"><meta property="og:image" content="assets/social-preview.png"><meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="preload" href="assets/rug-flat.webp" as="image"><script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap">
+  <a class="brand" href="index.html" aria-label="Kilim for Windows home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="6" width="28" height="28" rx="2" fill="#7D283D"/><path d="M10 10h20v20H10zM20 13l7 7-7 7-7-7z" fill="none" stroke="#EAF3F8" stroke-width="1.5"/><path d="M2 9h4m-4 6h4m-4 6h4m-4 6h4m-4 6h4m28-24h4m-4 6h4m-4 6h4m-4 6h4m-4 6h4" stroke="#7D283D" stroke-width="1.5"/></svg><span>Kilim<small>for Windows</small></span></a>
+  <nav class="nav" aria-label="Main navigation"><a class="patterns-link" href="#patterns">Patterns</a><a href="help.html">Setup</a><a href="releases.html">Releases</a><a class="button small" href="#download">Download</a></nav>
+</header>
+<main id="main">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <h1 id="hero-title">Sweep your desktop under the rug.</h1>
+      <p>A movable, foldable rug for your Windows desktop. Cover the clutter, then hold Control to reach your files.</p>
+      <a class="button" href="#download"><svg width="17" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2v9m-4-4 4 4 4-4M3 12v4h12v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download Windows beta</a>
+      <p class="hero-meta">Beta 0.1.0 · Windows x64 · 65.3 MiB<br>For Intel/AMD Windows PCs. Runtime included.</p>
+      <a class="setup-link" href="help.html">See how to set it up</a>
+    </div>
+    <div class="hero-demo">
+      <div class="desktop" aria-label="Illustrated Windows desktop with a rendered rug preview">
+        <svg class="desktop-scenery" viewBox="0 0 650 500" preserveAspectRatio="none" aria-hidden="true"><path d="M0 370 180 218 315 329 477 125 650 302v198H0z" fill="#ADC7D6"/><path d="m0 429 167-113 190 79 180-116 113 145v76H0z" fill="#FFFFFF"/></svg>
+        <div class="desktop-icons" aria-hidden="true"><span class="desktop-file"><i class="file-icon"></i>Notes</span><span class="desktop-file"><i class="file-icon"></i>Ideas</span><span class="desktop-file"><i class="file-icon"></i>Pictures</span><span class="desktop-file"><i class="file-icon"></i>Projects</span><span class="desktop-file"><i class="file-icon"></i>Drafts</span><span class="desktop-file"><i class="file-icon"></i>Later</span></div>
+        <img id="preview-rug" class="preview-rug" src="assets/rug-flat.webp" width="1100" height="760" alt="A Kashan carpet rendered by Kilim for Windows" tabindex="0" aria-describedby="demo-status" draggable="false">
+        <div class="desktop-bar" aria-hidden="true"><span class="windows-mark"><i></i><i></i><i></i><i></i></span><span>A little more room to breathe.</span><span>12:00</span></div>
+      </div>
+      <div class="demo-controls"><div class="demo-states" role="group" aria-label="Preview rug states"><button data-state="flat" aria-pressed="true">Flat</button><button data-state="fold" aria-pressed="false">Folded</button><button data-state="roll" aria-pressed="false">Rolled</button><button data-state="peek" aria-pressed="false">Peek</button></div><div class="move-controls" role="group" aria-label="Move the preview"><button data-move="-25" aria-label="Move rug left">←</button><button data-move="25" aria-label="Move rug right">→</button></div></div>
+      <p class="demo-note" id="demo-status" aria-live="polite">Flat rug. Drag the preview, or use the move buttons.</p>
+      <p class="demo-note">Rug states rendered by the Windows app. This preview moves images; cloth physics runs in the desktop app.</p>
+      <noscript><p class="no-js">The app preview controls need JavaScript. Downloads and setup work without it.</p></noscript>
+    </div>
+  </section>
+  <section class="interaction-strip wrap" aria-label="What you can do"><div><h3>Pick up a corner.</h3><p>Drag to move or fold the fabric. The rug settles over bumps where your desktop icons sit.</p></div><div><h3>Roll it out of the way.</h3><p>Double-click to roll the rug into a tube. Double-click again to lay it back down.</p></div><div><h3>Your files are still there.</h3><p>Hold <kbd>Ctrl</kbd> to make the rug translucent and click through to your icons. Files stay in place.</p></div></section>
+  <section class="section wrap" id="patterns" aria-labelledby="patterns-title">
+    <div class="section-intro"><h2 id="patterns-title">A different rug for every desktop.</h2><p>Fifteen patterns are included. Choose a favourite, or weave your own picture into a rug inside the app.</p></div>
+    <div class="patterns"><div><div class="pattern-preview"><img id="selected-pattern" src="assets/theme-kashan.webp" width="640" height="430" alt="Kashan rug pattern included in Kilim for Windows" loading="lazy"></div><p class="pattern-name"><strong id="pattern-title">Kashan</strong> <span>— included in the app</span></p></div>
+    <div><div class="swatches" role="group" aria-label="Choose a rug pattern">
+      <button class="swatch" data-theme="kashan" data-label="Kashan" aria-pressed="true"><img src="assets/theme-kashan.webp" width="640" height="430" alt="" loading="lazy"><span>Kashan</span></button>
+      <button class="swatch" data-theme="isfahan" data-label="Isfahan" aria-pressed="false"><img src="assets/theme-isfahan.webp" width="640" height="430" alt="" loading="lazy"><span>Isfahan</span></button>
+      <button class="swatch" data-theme="tebriz" data-label="Tabriz" aria-pressed="false"><img src="assets/theme-tebriz.webp" width="640" height="430" alt="" loading="lazy"><span>Tabriz</span></button>
+      <button class="swatch" data-theme="turkmen" data-label="Turkmen" aria-pressed="false"><img src="assets/theme-turkmen.webp" width="640" height="430" alt="" loading="lazy"><span>Turkmen</span></button>
+      <button class="swatch" data-theme="kilim" data-label="Kilim" aria-pressed="false"><img src="assets/theme-kilim.webp" width="640" height="430" alt="" loading="lazy"><span>Kilim</span></button>
+      <button class="swatch" data-theme="turk" data-label="Turkish" aria-pressed="false"><img src="assets/theme-turk.webp" width="640" height="430" alt="" loading="lazy"><span>Turkish</span></button>
+      <button class="swatch" data-theme="kurd" data-label="Kurdish" aria-pressed="false"><img src="assets/theme-kurd.webp" width="640" height="430" alt="" loading="lazy"><span>Kurdish</span></button>
+      <button class="swatch" data-theme="egypt" data-label="Egyptian" aria-pressed="false"><img src="assets/theme-egypt.webp" width="640" height="430" alt="" loading="lazy"><span>Egyptian</span></button>
+      <button class="swatch" data-theme="khayamiya" data-label="Khayamiya" aria-pressed="false"><img src="assets/theme-khayamiya.webp" width="640" height="430" alt="" loading="lazy"><span>Khayamiya</span></button>
+      <button class="swatch" data-theme="berber" data-label="Beni Ourain" aria-pressed="false"><img src="assets/theme-berber.webp" width="640" height="430" alt="" loading="lazy"><span>Beni Ourain</span></button>
+      <button class="swatch" data-theme="kazak" data-label="Kazak" aria-pressed="false"><img src="assets/theme-kazak.webp" width="640" height="430" alt="" loading="lazy"><span>Kazak</span></button>
+      <button class="swatch" data-theme="china" data-label="Chinese" aria-pressed="false"><img src="assets/theme-china.webp" width="640" height="430" alt="" loading="lazy"><span>Chinese</span></button>
+      <button class="swatch" data-theme="ayasofya" data-label="Ayasofya" aria-pressed="false"><img src="assets/theme-ayasofya.webp" width="640" height="430" alt="" loading="lazy"><span>Ayasofya</span></button>
+      <button class="swatch" data-theme="iznik" data-label="İznik" aria-pressed="false"><img src="assets/theme-iznik.webp" width="640" height="430" alt="" loading="lazy"><span>İznik</span></button>
+      <button class="swatch" data-theme="selcuklu" data-label="Seljuk" aria-pressed="false"><img src="assets/theme-selcuklu.webp" width="640" height="430" alt="" loading="lazy"><span>Seljuk</span></button>
+    </div><p class="custom-note">Make it yours: pick a local image from the tray menu. Adjust the size, switch the light from day to night, and turn the fabric sounds on or off.</p></div></div>
+  </section>
+  <section class="download-section" id="download" aria-labelledby="download-title"><div class="download-grid wrap">
+    <div><span class="release-tag">Free beta 0.1.0</span><h2 id="download-title">Give your desktop a rug.</h2><p>Portable download for 64-bit Intel/AMD Windows 10 or 11 PCs. The runtime is included.</p><a class="button" href="downloads/Kilim-Windows-0.1.0-beta-win-x64.zip" download>Download Windows beta</a><p class="download-info">ZIP · 65.3 MiB · Released 7 October 2026</p><div class="download-links"><a href="releases.html">Release notes</a><a href="downloads/Kilim-Windows-0.1.0-beta-win-x64.zip.sha256" download>SHA-256 checksum</a><a href="downloads/Kilim-Windows-source.zip" download>Windows source</a></div><p class="beta-note">This independent Windows beta is unsigned. Windows may display an unknown-publisher warning. ARM64 compatibility has not been tested.</p></div>
+    <div><h3>Three small steps.</h3><ol class="setup-steps"><li><strong>Extract the entire ZIP.</strong><span>Keep the artwork and executable together.</span></li><li><strong>Open Kilim.Windows.exe.</strong><span>The rug appears on your desktop.</span></li><li><strong>Find the tray icon.</strong><span>Right-click it for patterns, settings and Quit.</span></li></ol><a href="help.html">Read the setup guide</a></div>
+  </div></section>
+  <section class="section wrap faq-layout" aria-labelledby="faq-title"><div><h2 id="faq-title">A few things before you unfold it.</h2><p>Simple answers, with a <a href="help.html">setup guide</a> if you need more.</p></div><div class="faq">
+    <details><summary>Does it move or delete my files?</summary><p>No. The rug covers the desktop icons visually. Your files remain where they are, and holding Control lets you click through.</p></details>
+    <details><summary>Do I need to install .NET?</summary><p>No. This download includes the runtime. Extract the whole ZIP and run Kilim.Windows.exe. You do not need administrator access.</p></details>
+    <details><summary>Where are the app controls?</summary><p>In the system tray near the clock. The icon may be inside the hidden-icons arrow. Right-click it to change the rug or quit the app.</p></details>
+    <details><summary>Why does Windows show a warning?</summary><p>The beta executable has not been code-signed. Windows may identify the publisher as unknown. Check the release information and SHA-256 before deciding whether to run a download.</p></details>
+    <details><summary>Is this the original Kilim app?</summary><p>This is an unofficial Windows adaptation. <a href="https://github.com/yusufyilmazfr/kilim" target="_blank" rel="noopener noreferrer">Yusuf Yılmaz's original Kilim</a> is a macOS app; its cloth simulation and rug artwork are reused under the MIT licence.</p></details>
+    <details><summary>How do I remove it?</summary><p>Turn off launch at sign-in if you enabled it, choose Quit from the tray menu, and delete the extracted folder. The setup guide explains how to remove saved preferences too.</p></details>
+  </div></section>
+</main>
+<footer class="footer wrap"><p>Original Kilim and rug artwork by <a href="https://github.com/yusufyilmazfr/kilim" target="_blank" rel="noopener noreferrer">Yusuf Yılmaz</a>.<br>An independent Windows adaptation, shared under the MIT licence.</p><nav aria-label="Footer"><a href="help.html">Help</a><a href="privacy.html">Privacy</a><a href="credits.html">Credits</a><a href="releases.html">Releases</a></nav></footer>
+</body></html>
