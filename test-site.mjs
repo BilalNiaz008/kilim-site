@@ -10,8 +10,7 @@ const { chromium } = require(process.env.KILIM_PLAYWRIGHT_PATH || 'playwright');
 const root = path.dirname(fileURLToPath(import.meta.url));
 const base = process.env.KILIM_SITE_URL || 'http://127.0.0.1:8768';
 const output = path.join(root, 'verification');
-const appName = 'Kilim-Windows-0.1.0-beta-win-x64.zip';
-const appUrl = 'https://kilim-windows-download.suko-app.workers.dev/download/' + appName;
+const checksumName = 'Kilim-Windows-0.1.0-beta-win-x64.zip.sha256';
 const documents = ['index.html', 'download.html', 'help.html', 'releases.html', 'privacy.html', 'credits.html'];
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -45,15 +44,6 @@ try {
   await page.locator('summary').first().click();
   assert.equal(await page.locator('details').first().getAttribute('open'), '');
 
-  const expectedSize = 68494869;
-  const head = await context.request.head(appUrl);
-  assert.equal(head.status(), 200); assert.equal(Number(head.headers()['content-length']), expectedSize);
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('link', { name: 'Download free', exact: true }).first().click();
-  const download = await downloadPromise;
-  assert.equal(download.suggestedFilename(), appName);
-  await download.cancel();
-  assert.equal(page.url(), base + '/', 'free download leaves the homepage available');
   assert.equal((await context.request.head(base + '/purchase.html')).status(), 404, 'checkout page removed');
   assert.equal((await context.request.head(base + '/polar-config.mjs')).status(), 404, 'provider config removed');
 
@@ -64,9 +54,11 @@ try {
       assert.equal(await page.locator('h1').count(), 1, doc);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, width + 'px ' + doc);
       assert.doesNotMatch(await page.locator('body').innerText(), /Polar|Buy for|\$1|one-time purchase/i, doc);
-      const appLinks = page.getByRole('link', { name: 'Download free', exact: true });
-      assert.ok(await appLinks.count(), 'app download action on ' + doc);
-      for (const link of await appLinks.all()) assert.equal(await link.getAttribute('href'), appUrl, doc);
+      const placeholders = page.getByRole('button', { name: 'Download coming soon', exact: true });
+      assert.ok(await placeholders.count(), 'download status on ' + doc);
+      for (const button of await placeholders.all()) assert.equal(await button.isDisabled(), true, doc);
+      const appLinks = await page.locator('a[href]').evaluateAll(links => links.map(link => link.getAttribute('href')).filter(href => /-win-x64\.zip(?:$|[?#])/i.test(href)));
+      assert.deepEqual(appLinks, [], 'no active app download on ' + doc);
       assert.doesNotMatch(await page.locator('body').innerText(), /0\.2\.0/, 'hosted version on ' + doc);
       const links = await page.locator('a[href]').evaluateAll(items => [...new Set(items.map(a => a.getAttribute('href')).filter(h => !/^(https?:|#)/.test(h)))]);
       if (width === 1440) for (const href of links) assert.equal((await context.request.head(new URL(href, base + '/').href)).status(), 200, href);
@@ -88,10 +80,9 @@ try {
   assert.equal(files.includes('polar-config.mjs'), false);
   assert.equal(files.includes('test-site.mjs'), false);
   const publicDownloads = await readdir(path.join(publicRoot, 'downloads'));
-  assert.equal(publicDownloads.includes(appName), false, 'app archive stays on Cloudflare');
   assert.equal(publicDownloads.some(name => /win-x64\.zip$/.test(name)), false, 'static site does not bundle app binaries');
-  assert.ok(publicDownloads.includes(appName + '.sha256'), 'matching hosted-archive checksum included');
-  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'public Cloudflare download click', 'remote ZIP headers and size', 'all buttons use provided URL', 'displayed version matches hosted 0.1.0', 'checkout and provider config removed', 'static publication excludes app binaries', 'matching checksum included', 'no browser errors'] };
+  assert.ok(publicDownloads.includes(checksumName), 'release checksum retained');
+  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'download placeholders disabled', 'no active app download URL', 'checkout and provider config removed', 'static publication excludes app binaries', 'source and checksum links retained', 'no browser errors'] };
   await writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
 } finally { await browser.close(); }

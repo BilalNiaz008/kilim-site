@@ -1,6 +1,6 @@
 # Kilim for Windows — free website
 
-The app is free. The site offers a direct ZIP download with no account, payment or activation key. Checkout pages, provider configuration and in-app licence checks have been removed.
+The app is free. The app download URL is temporarily unset. App download buttons display “Download coming soon” and are disabled until a new link is provided. Checkout pages, provider configuration and in-app licence checks have been removed.
 
 ## Preview locally
 
@@ -19,11 +19,7 @@ Open http://127.0.0.1:8768. The homepage preview is optional JavaScript; downloa
 - privacy.html: the app operates locally without payment or licence-network requests.
 - credits.html: original author, MIT notices and editable source.
 
-The app buttons point directly to the public Cloudflare download:
-
-https://kilim-windows-download.suko-app.workers.dev/download/Kilim-Windows-0.1.0-beta-win-x64.zip
-
-The website displays the hosted beta 0.1.0, 68,494,869-byte package and its verified SHA-256. The downloads folder supplies the matching checksum and editable source. Local 0.2.0 app archives remain available for development but are not the version advertised by these buttons.
+The previous app download URL has been removed from all six pages and the browser tests. Source and checksum downloads remain available. To restore app downloads, replace the disabled app buttons with the new confirmed URL and update the browser download checks and release metadata to match it.
 
 ## Prepare public hosting
 
@@ -31,9 +27,9 @@ The website displays the hosted beta 0.1.0, 68,494,869-byte package and its veri
 node .\prepare-publish.mjs
 ```
 
-This copies site pages, visual assets, checksum and source to ../kilim-site-public, excluding app binaries, tests and development artifacts. The ZIP is hosted by the existing Cloudflare Worker/R2 URL, so the static website no longer needs to ship the large app file. No payment configuration is required. The Worker itself is unchanged by this local update.
+This copies site pages, visual assets, checksum and source to ../kilim-site-public, excluding app binaries, tests and development artifacts. The static site does not bundle the app ZIP; a new external download link will be provided later. No payment configuration is required. The Worker itself is unchanged by this local update.
 
-The website now intentionally links to the hosted 0.1.0 beta. No external site or payment provider was modified here.
+No external hosting or app package was changed when removing the link.
 
 ## Verify
 
