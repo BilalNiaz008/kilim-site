@@ -1,131 +1,13 @@
 # Kilim for Windows — website design and launch brief
 
-Implementation update: the app is free. The customer journey is direct download → extract → run, with no checkout, account or activation. The app download URL is temporarily unset and buttons show Download coming soon; the local app source remains 0.2.0; README.md describes the free publication flow.
+Help visitors understand the desktop rug, check Windows compatibility, and purchase the licensed 0.3.0 beta for US$1 once. Preserve the existing pale blue desktop, woven red purchase actions, actual app renderings, pattern gallery and system typography.
 
-## Purpose and audience
+The customer journey is **Buy for $1 → Polar checkout → ZIP and licence key → extract → run → activate**. Returning buyers use the suko-pro customer portal. Polar handles payment and protected file delivery. The website stays static, and its purchase links work without JavaScript.
 
-Help a visitor understand the desktop rug within ten seconds, decide whether their Windows PC is compatible, and download the portable beta. The audience is people who enjoy personalising their desktop, small playful utilities, textile art and open-source projects. The page should show the actual product before explaining it.
+State the one-PC and Windows-user activation limit before purchase. Internet is required at activation, every launch and checks every 30 minutes; failed checks close the rug. Explain how to deactivate and transfer a licence in setup and FAQ copy.
 
-Use the name **Kilim for Windows**. Describe it as an unofficial Windows adaptation. Credit Yusuf Yılmaz for the original Kilim cloth simulation and rug artwork; link to the upstream project. Do not imply upstream endorsement.
+Keep the 0.3.0 version, ZIP size, checksum and source archive consistent. Never link a free app binary or preview package from the paid site. Preserve the MIT source download and Yusuf Yılmaz's original Kilim attribution. Describe this as an unofficial Windows adaptation, with an unsigned executable and untested ARM64 compatibility.
 
-## Design direction
+The privacy page must reflect Polar purchase and licence requests, the hashed device condition, Windows-protected local credentials, and local-only custom pictures and desktop interaction. Do not claim the licensed app runs without network requests.
 
-A spacious desktop playground, with the rug as the memorable object. Pale blue surfaces connect the page to a Windows desktop; a deep woven red ties the primary action to the rug artwork. The surrounding interface stays quiet. No decorative gradients, fake badges, testimonials, usage counters or scroll-triggered entrances.
-
-### Colour tokens
-
-- Desktop mist: `#EAF3F8` — main page background.
-- Midnight ink: `#142E40` — headings, logo and strong text.
-- Woven red: `#7D283D` — download action and selected control.
-- Paper: `#FFFFFF` — downloads, setup steps and document surfaces.
-- Thread blue: `#ADC7D6` — structural borders and desktop illustration.
-- Slate: `#516878` — supporting text.
-
-### Type, layout and spacing
-
-Headlines use **Trebuchet MS**, a broad, friendly system typeface. Body copy uses **Segoe UI**, familiar to Windows users. No font service or font download is required. Use a 16–18 px body, about 1.6 line height, a 40–76 px responsive landing headline, and 28–44 px section headings. Keep prose to 60–70 characters per line.
-
-Desktop: left-aligned headline/download action beside a larger rendered desktop preview. A 1,180 px content width, generous 80–112 px section spacing and meaningful whitespace give the artwork room. Mobile: headline, download action, preview, then the sections in the same logical order; the navigation wraps and controls stay touch-sized. Rounded corners distinguish the desktop preview and download area; text sections stay open.
-
-The initial generic feature-card grid was replaced with a large product demonstration, three short interaction explanations and an open textile gallery. The rug itself communicates the personality.
-
-```text
-Logo                       Patterns   Setup   Releases   Download
-
-Sweep your desktop       [ Windows-style desktop illustration ]
-under the rug.           [       Actual app-rendered rug      ]
-Short explanation        [ Flat   Folded   Rolled   Peek      ]
-Download Windows beta
-Version + compatibility
-
-Drag a corner      Roll it away      Peek at your files
-
-15 rug patterns       [ selected rug ]     [ pattern choices ]
-
-Download package          Extract → Open → Find tray controls
-Size / version / SHA      Requirements and beta details
-
-FAQ                       Upstream attribution / source / privacy
-```
-
-## Pages and content
-
-### Home — `/`
-
-Header: logo, Patterns, Setup, Releases, Download. No account/sign-in action.
-
-Hero headline: **Sweep your desktop under the rug.**
-
-Hero copy: **A movable, foldable rug for your Windows desktop. Cover the clutter, then hold Control to reach your files.**
-
-Primary action: **Download Windows beta**. Supporting line: **Beta 0.1.0 · Windows x64 · 65.3 MiB**. Requirement text clarifies Intel/AMD Windows PCs; the .NET runtime is included. A link below leads to setup instructions.
-
-Demo: Flat, Folded and Rolled are images generated by the Windows app's test renderer. Peek reveals the sample desktop beneath the rendered rug. Visitors can move the flat/folded preview with mouse, touch or keyboard. Label it as a rendered preview, not a full browser version of the cloth simulation or a recording of a real desktop.
-
-Interactions: move/fold by dragging, roll/unroll by double-clicking, hold Control to reach the real icons. Explain that files stay in place. The preset gallery lets visitors choose a real built-in rug image; there are 15 included patterns plus a custom-photo option in the desktop app.
-
-Download area: exact version, architecture, size, release date, ZIP button, checksum link, source ZIP link, runtime included, unsigned beta disclosure, setup steps and release-note link.
-
-FAQ answers: files remain in place; how to run; where tray controls live; what the Windows warning means; supported PCs; removing the app; relationship to upstream Kilim.
-
-### Setup and help — `/help.html`
-
-Extract the entire ZIP; keep assets next to the executable; double-click the executable; find the tray icon. List controls and explain Control-copy semantics in Explorer. Provide remedies for an invisible rug, missing tray icon, missing assets, zero icon bumps and a busy desktop. Provide Quit/removal instructions and the local log path. No invented support email or issue URL.
-
-### Releases — `/releases.html`
-
-One real entry: beta 0.1.0, 7 October 2026, Windows x64. State the features delivered and the actual test scope: one Windows PC with two monitors and 21 desktop icons. Describe known limits: English UI, upstream preview images rather than procedural presets, unverified ARM64 compatibility, shell/DPI variations, unsigned packaging. Offer versioned app ZIP, source ZIP and SHA-256.
-
-### Privacy — `/privacy.html`
-
-The implemented site has no analytics, forms, advertising, third-party scripts or cookies. The app operates locally, reads desktop icon bounds, stores settings/custom images locally, and enables sign-in startup only if requested. Explain that a public hosting service may retain standard request logs; revisit this wording when choosing the host or adding analytics. Do not promise anonymous downloading regardless of host.
-
-### Credits — `/credits.html`
-
-Separate the original Kilim author/artwork from the independently built Windows adaptation. Include upstream source and license links plus the Windows source download. MIT attribution ships in the app and site. WPF/.NET runtime notices stay in the application archive.
-
-## Download and launch flow
-
-1. Visitor sees what the app does.
-2. Download area explains compatibility and beta status before the ZIP link.
-3. Visitor extracts the ZIP and runs the executable; no external .NET installation.
-4. Tray controls provide settings and Quit.
-
-There is no checkout, account, newsletter or payment integration in the current product. Start with a free beta. Donation or paid features can be added after deciding their terms and providing a concrete reason to charge.
-
-The current app archive is 68,494,869 bytes and its SHA-256 is `d8992b4101ec8ef689bf8c2048724d301e19771b08a8dd46d9823f33fe227773`.
-
-## Implementation and hosting
-
-Use plain HTML, CSS and a small JavaScript file. This product site has no content or application need for a database, backend, React dependency or authentication. Use native buttons, details/summary for FAQs, image loading hints and download links. One stylesheet provides the shared layout across five pages.
-
-The local preview includes the actual app and source ZIPs so downloads can be checked. For public deployment, put the installer ZIP and checksum on **GitHub Releases** under a Windows project repository you own, then replace the local app/source URLs with those release assets. Keep the site on a static host. Cloudflare Pages is suitable for the small website files, but its per-asset limit is 25 MiB, so the 65.3 MiB app must be hosted elsewhere. GitHub release assets permit files under 2 GiB. These are verified hosting constraints, not a claim that a public repository or release already exists.
-
-Official references:
-- https://developers.cloudflare.com/pages/platform/limits/
-- https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
-
-Keep download URLs and version details consistent on all pages. Serve downloads over HTTPS. Publish changes to version, architecture, checksum and release notes together. Rebuild the app with supported runtime/security updates when shipping a new release. Code signing is a future distribution step requiring an actual certificate; the current site should describe the unsigned state accurately.
-
-## Search and sharing
-
-Title: **Kilim for Windows — a rug for your desktop**.
-
-Description: **Drag, fold and roll a rug over your Windows desktop icons. Download the free portable Windows beta, with 15 rug patterns and custom pictures.**
-
-Each page gets one descriptive H1 and its own title/description. The hero and gallery images have meaningful alt text. The homepage supplies Open Graph/Twitter metadata and a 1,200 × 630 preview image. Add an absolute canonical URL, sitemap.xml and absolute social-image URL after choosing the actual public domain; do not invent a domain in the production configuration. Search visibility comes from explaining desktop rugs, Windows icon hiding, setup and compatibility accurately, rather than repeating keywords.
-
-## Accessibility and performance
-
-The preview has button and keyboard alternatives to dragging. All controls have visible focus and at least 44 px touch targets. The site respects reduced motion; no autoplay is needed. Never hide the download link based on user-agent detection. On mobile, retain a clearly labelled Windows download for later transfer.
-
-Use actual exported app imagery, optimise to WebP and keep the initial page light. Load gallery/detail images lazily. Do not ship the 65 MiB app until the visitor clicks its download link. Avoid web fonts and third-party scripts. Check desktop/mobile layouts, keyboard use, reduced motion, download hashes and link targets before launch.
-
-## Launch order and remaining decisions
-
-- Ready locally: homepage, interactive preview, gallery, download flow, setup, releases, privacy, credits, source and app archives.
-- Choose: public domain, hosting account, and the Windows repository/release location. No availability claim is made for a suggested domain.
-- Before public upload: point downloads at owned release assets, add the real canonical/social URLs, decide a support destination and test on additional Windows PCs.
-- Add later when useful: signed builds, ARM64 package after testing, a real demo recording, public changelog for subsequent releases, analytics only if there is a decision it will inform.
-
-The prototype is local and has not been published.
+Verify the existing preview controls, all six pages at desktop/tablet/mobile widths, keyboard accessibility, the permanent checkout destination, the returning-buyer portal and publication contents. Preserve the kilimwindow.online CNAME. A live purchase/activation and device-transfer test remains a separate release check.

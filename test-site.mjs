@@ -1,7 +1,7 @@
 // Run with KILIM_PLAYWRIGHT_PATH pointing at an installed Playwright package.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { mkdir, writeFile, readdir } from 'node:fs/promises';
+import { mkdir, writeFile, readdir, readFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -10,7 +10,10 @@ const { chromium } = require(process.env.KILIM_PLAYWRIGHT_PATH || 'playwright');
 const root = path.dirname(fileURLToPath(import.meta.url));
 const base = process.env.KILIM_SITE_URL || 'http://127.0.0.1:8768';
 const output = path.join(root, 'verification');
-const checksumName = 'Kilim-Windows-0.1.0-beta-win-x64.zip.sha256';
+const checksumName = 'Kilim-Windows-0.3.0-beta-win-x64.zip.sha256';
+const checksum = '80ac19fff99604bf2a44034d7eab832943f6b63f216e8c3d50e0c549d08857c6';
+const checkout = 'https://buy.polar.sh/polar_cl_F4BVskVz9PYQ9hahNEYksDCf6VDmMh7gyivu70FzZcy';
+const portal = 'https://polar.sh/suko-pro/portal';
 const documents = ['index.html', 'download.html', 'help.html', 'releases.html', 'privacy.html', 'credits.html'];
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -44,8 +47,10 @@ try {
   await page.locator('summary').first().click();
   assert.equal(await page.locator('details').first().getAttribute('open'), '');
 
-  assert.equal((await context.request.head(base + '/purchase.html')).status(), 404, 'checkout page removed');
-  assert.equal((await context.request.head(base + '/polar-config.mjs')).status(), 404, 'provider config removed');
+  await page.route(checkout, route => route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>Polar checkout destination</h1>' }));
+  await page.locator('a[data-checkout]').first().click();
+  assert.equal(page.url(), checkout, 'buy button opens the permanent Polar checkout');
+  await page.unroute(checkout);
 
   for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
@@ -53,17 +58,32 @@ try {
       await page.goto(base + '/' + doc, { waitUntil: 'networkidle' });
       assert.equal(await page.locator('h1').count(), 1, doc);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, width + 'px ' + doc);
-      assert.doesNotMatch(await page.locator('body').innerText(), /Polar|Buy for|\$1|one-time purchase/i, doc);
-      const placeholders = page.getByRole('button', { name: 'Download coming soon', exact: true });
-      assert.ok(await placeholders.count(), 'download status on ' + doc);
-      for (const button of await placeholders.all()) assert.equal(await button.isDisabled(), true, doc);
+      assert.doesNotMatch(await page.locator('body').innerText(), /Download coming soon|free beta|download the free|no account, payment|without online licence/i, doc);
+      const purchases = page.getByRole('link', { name: 'Buy for $1', exact: true });
+      assert.ok(await purchases.count(), 'purchase action on ' + doc);
+      for (const button of await purchases.all()) {
+        assert.equal(await button.getAttribute('href'), checkout, doc);
+        assert.equal(await button.getAttribute('download'), null, 'checkout is navigation, not an app download');
+      }
       const appLinks = await page.locator('a[href]').evaluateAll(links => links.map(link => link.getAttribute('href')).filter(href => /-win-x64\.zip(?:$|[?#])/i.test(href)));
       assert.deepEqual(appLinks, [], 'no active app download on ' + doc);
-      assert.doesNotMatch(await page.locator('body').innerText(), /0\.2\.0/, 'hosted version on ' + doc);
-      const links = await page.locator('a[href]').evaluateAll(items => [...new Set(items.map(a => a.getAttribute('href')).filter(h => !/^(https?:|#)/.test(h)))]);
+      assert.doesNotMatch(await page.locator('body').innerText(), /0\.[12]\.0/, 'paid version on ' + doc);
+      if (['index.html', 'download.html', 'help.html'].includes(doc)) assert.match(await page.locator('body').innerText(), /30 minutes/);
+      const links = await page.locator('a[href]').evaluateAll(items => [...new Set(items.map(a => a.getAttribute('href')).filter(h => !/^(https?:|mailto:|#)/.test(h)))]);
       if (width === 1440) for (const href of links) assert.equal((await context.request.head(new URL(href, base + '/').href)).status(), 200, href);
     }
   }
+  await page.goto(base + '/download.html', { waitUntil: 'networkidle' });
+  assert.equal(await page.getByRole('link', { name: 'Open your Polar purchases', exact: true }).getAttribute('href'), portal);
+  assert.match(await page.locator('body').innerText(), /US\$1 once/);
+  const checksumResponse = await context.request.get(base + '/downloads/' + checksumName);
+  assert.equal(checksumResponse.status(), 200);
+  assert.equal((await checksumResponse.text()).trim(), checksum + '  Kilim-Windows-0.3.0-beta-win-x64.zip');
+  const noJs = await browser.newContext({ javaScriptEnabled: false });
+  const noJsPage = await noJs.newPage();
+  await noJsPage.goto(base + '/download.html');
+  assert.equal(await noJsPage.getByRole('link', { name: 'Buy for $1', exact: true }).last().getAttribute('href'), checkout, 'checkout works without JavaScript');
+  await noJs.close();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base, { waitUntil: 'networkidle' });
   await page.locator('#patterns').scrollIntoViewIfNeeded();
@@ -81,8 +101,9 @@ try {
   assert.equal(files.includes('test-site.mjs'), false);
   const publicDownloads = await readdir(path.join(publicRoot, 'downloads'));
   assert.equal(publicDownloads.some(name => /win-x64\.zip$/.test(name)), false, 'static site does not bundle app binaries');
-  assert.ok(publicDownloads.includes(checksumName), 'release checksum retained');
-  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'download placeholders disabled', 'no active app download URL', 'checkout and provider config removed', 'static publication excludes app binaries', 'source and checksum links retained', 'no browser errors'] };
+  assert.ok(publicDownloads.includes(checksumName), 'current release checksum published');
+  assert.equal((await readFile(path.join(publicRoot, 'CNAME'), 'utf8')).trim(), 'kilimwindow.online', 'custom domain preserved');
+  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'permanent Polar checkout navigation', 'returning buyer portal', 'purchase links work without JavaScript', 'paid copy and activation requirements', 'static publication excludes app binaries', '0.3.0 source and checksum links', 'custom domain preserved', 'no browser errors'], livePaymentOrActivationTested: false };
   await writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
 } finally { await browser.close(); }
