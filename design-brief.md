@@ -1,6 +1,6 @@
 # Kilim for Windows — website design and launch brief
 
-Implementation update: the app is free. The customer journey is direct download → extract → run, with no checkout, account or activation. The website uses the provided public beta 0.1.0 download link; the local app source remains 0.2.0; README.md describes the free publication flow.
+Implementation update: the app is free. The customer journey is direct download → extract → run, with no checkout, account or activation. The app download URL is temporarily unset and buttons show Download coming soon; the local app source remains 0.2.0; README.md describes the free publication flow.
 
 ## Purpose and audience
 
