@@ -14,11 +14,11 @@ The product requires one licence activation per PC and Windows user. Internet is
 python -m http.server 8768 --bind 127.0.0.1
 ```
 
-Open http://127.0.0.1:8768. JavaScript provides the optional rug preview and pattern selection only.
+Open http://127.0.0.1:8768. JavaScript provides the optional rug preview and pattern selection only. The homepage also embeds a 38-second desktop demonstration with native playback controls and a poster image. It does not autoplay or preload the video; visitors choose when to load and play it. The video has no sound and includes a text description.
 
 ## Pages
 
-- index.html: app preview, patterns, $1 purchase, activation requirements and FAQs.
+- index.html: app preview, desktop demonstration video, patterns, $1 purchase, activation requirements and FAQs.
 - download.html: checkout, returning-buyer portal and extraction/activation steps.
 - help.html: setup, licence transfers, controls, troubleshooting and removal.
 - releases.html: 0.3.0 ZIP size, SHA-256, actual test scope and known limits.
@@ -33,7 +33,7 @@ The shipped ZIP is Kilim-Windows-0.3.0-beta-win-x64.zip, 68,521,073 bytes. Its c
 node .\prepare-publish.mjs
 ```
 
-This copies the six pages, visual assets, 0.3.0 checksum, MIT source archive, licence and CNAME to ../kilim-site-public. It excludes app binaries, tests and development artifacts. The existing custom domain is kilimwindow.online.
+This copies the six pages, visual assets, demo video and poster, 0.3.0 checksum, MIT source archive, licence and CNAME to ../kilim-site-public. It excludes app binaries, tests and development artifacts. The existing custom domain is kilimwindow.online.
 
 ## Verify
 

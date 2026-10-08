@@ -47,6 +47,21 @@ try {
   await page.locator('summary').first().click();
   assert.equal(await page.locator('details').first().getAttribute('open'), '');
 
+  const video = page.locator('#desktop-video');
+  assert.equal(await video.getAttribute('preload'), 'none', 'video waits for visitor interaction');
+  assert.equal(await video.getAttribute('autoplay'), null, 'no autoplay');
+  assert.equal(await video.evaluate(element => element.controls && element.playsInline), true, 'native controls and inline playback');
+  await video.scrollIntoViewIfNeeded();
+  await video.screenshot({ path: path.join(output, 'video-desktop.png') });
+  await video.evaluate(element => element.load());
+  await page.waitForFunction(() => document.querySelector('#desktop-video').readyState >= 2);
+  assert.ok(Math.abs(await video.evaluate(element => element.duration) - 37.9) < 0.2, 'complete recording duration');
+  assert.deepEqual(await video.evaluate(element => [element.videoWidth, element.videoHeight]), [1280, 720]);
+  await video.evaluate(element => { element.muted = true; return element.play(); });
+  await page.waitForFunction(() => document.querySelector('#desktop-video').currentTime > 0.25);
+  assert.equal(await video.evaluate(element => element.error), null, 'browser decodes and plays video');
+  await video.evaluate(element => element.pause());
+
   await page.route(checkout, route => route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>Polar checkout destination</h1>' }));
   await page.locator('a[data-checkout]').first().click();
   assert.equal(page.url(), checkout, 'buy button opens the permanent Polar checkout');
@@ -83,6 +98,8 @@ try {
   const noJsPage = await noJs.newPage();
   await noJsPage.goto(base + '/download.html');
   assert.equal(await noJsPage.getByRole('link', { name: 'Buy for $1', exact: true }).last().getAttribute('href'), checkout, 'checkout works without JavaScript');
+  await noJsPage.goto(base + '/index.html');
+  assert.equal(await noJsPage.locator('#desktop-video').getAttribute('controls'), '', 'video controls work without site JavaScript');
   await noJs.close();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base, { waitUntil: 'networkidle' });
@@ -90,6 +107,8 @@ try {
   await page.waitForLoadState('networkidle'); await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: path.join(output, 'homepage-mobile.png'), fullPage: true });
   await page.screenshot({ path: path.join(output, 'hero-mobile.png') });
+  await page.locator('#desktop-video').scrollIntoViewIfNeeded();
+  await page.locator('#desktop-video').screenshot({ path: path.join(output, 'video-mobile.png') });
   assert.deepEqual(errors, []);
 
   const built = spawnSync(process.execPath, [path.join(root, 'prepare-publish.mjs')], { encoding: 'utf8' });
@@ -103,7 +122,9 @@ try {
   assert.equal(publicDownloads.some(name => /win-x64\.zip$/.test(name)), false, 'static site does not bundle app binaries');
   assert.ok(publicDownloads.includes(checksumName), 'current release checksum published');
   assert.equal((await readFile(path.join(publicRoot, 'CNAME'), 'utf8')).trim(), 'kilimwindow.online', 'custom domain preserved');
-  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'permanent Polar checkout navigation', 'returning buyer portal', 'purchase links work without JavaScript', 'paid copy and activation requirements', 'static publication excludes app binaries', '0.3.0 source and checksum links', 'custom domain preserved', 'no browser errors'], livePaymentOrActivationTested: false };
+  assert.equal((await readFile(path.join(publicRoot, 'assets/kilim-demo.mp4'))).length, (await readFile(path.join(root, 'assets/kilim-demo.mp4'))).length, 'video included in publication');
+  assert.ok((await readFile(path.join(publicRoot, 'assets/kilim-demo-poster.webp'))).length > 0, 'poster included in publication');
+  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'video decoding and playback', 'video controls, poster and mobile layout', 'permanent Polar checkout navigation', 'returning buyer portal', 'purchase links work without JavaScript', 'paid copy and activation requirements', 'static publication includes demo video and excludes app binaries', '0.3.0 source and checksum links', 'custom domain preserved', 'no browser errors'], livePaymentOrActivationTested: false };
   await writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
 } finally { await browser.close(); }
