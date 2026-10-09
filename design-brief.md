@@ -8,6 +8,6 @@ State the one-PC and Windows-user activation limit before purchase. Internet is 
 
 Keep the 0.3.0 version, ZIP size, checksum and source archive consistent. Never link a free app binary or preview package from the paid site. Preserve the MIT source download and Yusuf Yılmaz's original Kilim attribution. Describe this as an unofficial Windows adaptation, with an unsigned executable and untested ARM64 compatibility.
 
-The privacy page must reflect Polar purchase and licence requests, the hashed device condition, Windows-protected local credentials, and local-only custom pictures and desktop interaction. Do not claim the licensed app runs without network requests.
+The privacy page must reflect Polar purchase and licence requests, the hashed device condition, Windows-protected local credentials, and local-only custom pictures and desktop interaction. Website Google Analytics uses measurement ID G-TPDNTJCHD7 and first-party cookies; disclose it alongside a link to Google's privacy information. Do not claim the site has no analytics or that the licensed app runs without network requests.
 
 Verify the existing preview controls, all six pages at desktop/tablet/mobile widths, keyboard accessibility, the permanent checkout destination, the returning-buyer portal and publication contents. Preserve the kilimwindow.online CNAME. A live purchase/activation and device-transfer test remains a separate release check.

@@ -14,10 +14,18 @@ const checksumName = 'Kilim-Windows-0.3.0-beta-win-x64.zip.sha256';
 const checksum = '80ac19fff99604bf2a44034d7eab832943f6b63f216e8c3d50e0c549d08857c6';
 const checkout = 'https://buy.polar.sh/polar_cl_F4BVskVz9PYQ9hahNEYksDCf6VDmMh7gyivu70FzZcy';
 const portal = 'https://polar.sh/suko-pro/portal';
+const analyticsId = 'G-TPDNTJCHD7';
+const analyticsUrl = 'https://www.googletagmanager.com/gtag/js?id=' + analyticsId;
 const documents = ['index.html', 'download.html', 'help.html', 'releases.html', 'privacy.html', 'credits.html'];
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, reducedMotion: 'reduce', acceptDownloads: true });
+const analyticsRequests = [];
+// Intercept Google so automated checks do not add visits to production analytics.
+await context.route('https://www.googletagmanager.com/gtag/js?*', route => {
+  analyticsRequests.push(route.request().url());
+  return route.fulfill({ status: 200, contentType: 'application/javascript', body: '' });
+});
 const page = await context.newPage();
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
@@ -72,6 +80,15 @@ try {
     for (const doc of documents) {
       await page.goto(base + '/' + doc, { waitUntil: 'networkidle' });
       assert.equal(await page.locator('h1').count(), 1, doc);
+      if (width === 1440) {
+        const analyticsTag = page.locator('head script[src^="https://www.googletagmanager.com/gtag/js"]');
+        assert.equal(await analyticsTag.count(), 1, 'one Google tag in ' + doc);
+        assert.equal(await analyticsTag.getAttribute('src'), analyticsUrl, doc);
+        assert.equal(await analyticsTag.evaluate(element => element.async), true, 'async Google tag');
+        const analyticsCommands = await page.evaluate(() => window.dataLayer.map(command => Array.from(command)));
+        assert.equal(analyticsCommands.filter(command => command[0] === 'js').length, 1, doc);
+        assert.deepEqual(analyticsCommands.filter(command => command[0] === 'config'), [['config', analyticsId]], doc);
+      }
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, width + 'px ' + doc);
       assert.doesNotMatch(await page.locator('body').innerText(), /Download coming soon|free beta|download the free|no account, payment|without online licence/i, doc);
       const purchases = page.getByRole('link', { name: 'Buy for $1', exact: true });
@@ -110,6 +127,8 @@ try {
   await page.locator('#desktop-video').scrollIntoViewIfNeeded();
   await page.locator('#desktop-video').screenshot({ path: path.join(output, 'video-mobile.png') });
   assert.deepEqual(errors, []);
+  assert.ok(analyticsRequests.length >= documents.length, 'Google tag requested across the site');
+  assert.ok(analyticsRequests.every(url => url === analyticsUrl), 'all pages load the provided measurement ID');
 
   const built = spawnSync(process.execPath, [path.join(root, 'prepare-publish.mjs')], { encoding: 'utf8' });
   assert.equal(built.status, 0, built.stderr);
@@ -124,7 +143,11 @@ try {
   assert.equal((await readFile(path.join(publicRoot, 'CNAME'), 'utf8')).trim(), 'kilimwindow.online', 'custom domain preserved');
   assert.equal((await readFile(path.join(publicRoot, 'assets/kilim-demo.mp4'))).length, (await readFile(path.join(root, 'assets/kilim-demo.mp4'))).length, 'video included in publication');
   assert.ok((await readFile(path.join(publicRoot, 'assets/kilim-demo-poster.webp'))).length > 0, 'poster included in publication');
-  const report = { passed: true, checks: ['six responsive pages', 'preview/gallery/keyboard controls', 'video decoding and playback', 'video controls, poster and mobile layout', 'permanent Polar checkout navigation', 'returning buyer portal', 'purchase links work without JavaScript', 'paid copy and activation requirements', 'static publication includes demo video and excludes app binaries', '0.3.0 source and checksum links', 'custom domain preserved', 'no browser errors'], livePaymentOrActivationTested: false };
+  for (const doc of documents) {
+    const publishedPage = await readFile(path.join(publicRoot, doc), 'utf8');
+    assert.equal(publishedPage.split(analyticsUrl).length - 1, 1, 'one published Google tag in ' + doc);
+  }
+  const report = { passed: true, checks: ['six responsive pages', 'Google Analytics tag and initialization once per page', 'analytics requests intercepted during tests', 'preview/gallery/keyboard controls', 'video decoding and playback', 'video controls, poster and mobile layout', 'permanent Polar checkout navigation', 'returning buyer portal', 'purchase links work without JavaScript', 'paid copy and activation requirements', 'static publication includes demo video and excludes app binaries', '0.3.0 source and checksum links', 'custom domain preserved', 'no browser errors'], googleAnalyticsRealtimeVerified: false, livePaymentOrActivationTested: false };
   await writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
 } finally { await browser.close(); }
