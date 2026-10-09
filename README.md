@@ -14,7 +14,13 @@ The product requires one licence activation per PC and Windows user. Internet is
 python -m http.server 8768 --bind 127.0.0.1
 ```
 
-Open http://127.0.0.1:8768. JavaScript provides the optional rug preview and pattern selection only. The homepage also embeds a 38-second desktop demonstration with native playback controls and a poster image. It does not autoplay or preload the video; visitors choose when to load and play it. The video has no sound and includes a text description.
+Open http://127.0.0.1:8768. The site JavaScript provides the optional rug preview and pattern selection. The Google Analytics tag described below also runs on these pages. The homepage embeds a 38-second desktop demonstration with native playback controls and a poster image. It does not autoplay or preload the video; visitors choose when to load and play it. The video has no sound and includes a text description.
+
+## Google Analytics
+
+All six HTML pages include the provided Google tag for measurement ID `G-TPDNTJCHD7` once in the head. It loads asynchronously and initializes the default GA4 configuration. The privacy page describes analytics and first-party cookies. No custom purchase tracking or Polar payment events were added.
+
+The same tag runs in local previews. Browser tests intercept the Google loader, verify initialization, and do not send test visits to Google. Confirm receipt in Google Analytics Realtime after deploying; the automated checks do not access your Analytics account.
 
 ## Pages
 
@@ -22,7 +28,7 @@ Open http://127.0.0.1:8768. JavaScript provides the optional rug preview and pat
 - download.html: checkout, returning-buyer portal and extraction/activation steps.
 - help.html: setup, licence transfers, controls, troubleshooting and removal.
 - releases.html: 0.3.0 ZIP size, SHA-256, actual test scope and known limits.
-- privacy.html: local desktop data, protected credentials and Polar licence requests.
+- privacy.html: local desktop data, protected credentials, Polar licence requests and website Google Analytics.
 - credits.html: original author, MIT attribution and the current editable source.
 
 The shipped ZIP is Kilim-Windows-0.3.0-beta-win-x64.zip, 68,521,073 bytes. Its checksum is published under downloads; the app itself is delivered by the product's Polar File Downloads benefit. Both the download benefit and License Keys benefit must remain attached to the product.

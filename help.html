@@ -1,4 +1,14 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setup and help — Kilim for Windows</title><meta name="description" content="Run the portable Windows beta, find tray controls, use peek, and troubleshoot the desktop rug."><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"></head><body>
+<!doctype html><html lang="en"><head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TPDNTJCHD7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TPDNTJCHD7');
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setup and help — Kilim for Windows</title><meta name="description" content="Run the portable Windows beta, find tray controls, use peek, and troubleshoot the desktop rug."><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"></head><body>
 <a class="skip" href="#main">Skip to content</a><header class="header wrap"><a class="brand" href="index.html"><img src="assets/favicon.svg" width="37" height="37" alt=""><span>Kilim<small>for Windows</small></span></a><nav class="nav" aria-label="Main navigation"><a href="help.html" aria-current="page">Setup</a><a href="download.html">Get Kilim</a><a class="button small" data-checkout href="https://buy.polar.sh/polar_cl_F4BVskVz9PYQ9hahNEYksDCf6VDmMh7gyivu70FzZcy">Buy for $1</a></nav></header>
 <main id="main" class="page wrap prose"><div class="document-nav"><a href="index.html">Back to Kilim</a></div><h1>Unfold your desktop rug.</h1><p class="lead">Buy, download and activate. The Windows runtime is already inside the package.</p>
 <h2>Get your app and key</h2><p>Buy Kilim for US$1 once from the <a href="download.html">purchase page</a>. Open <a href="https://polar.sh/suko-pro/portal">your Polar purchases</a> with the checkout email to download the ZIP and copy your licence key.</p>
@@ -10,4 +20,4 @@
 <h2>Save information for a bug report</h2><p>Note your Windows version, monitor count, display scaling, the selected rug pattern, and what you were doing. The app writes errors to <code>%LOCALAPPDATA%\Kilim.Windows\kilim.log</code> when an operation fails. The beta does not include a built-in feedback form.</p>
 <h2>Remove the app</h2><ol><li>If enabled, turn off <strong>Launch at sign-in</strong> in the tray menu.</li><li>Select <strong>Deactivate this PC</strong> to release the licence slot and close Kilim, or release the device through Polar and quit the app.</li><li>Delete the extracted app folder.</li><li>Optionally delete <code>%LOCALAPPDATA%\Kilim.Windows</code> to remove preferences, the saved custom picture and protected activation credentials.</li></ol><p>Your desktop files remain in place. Deleting local files alone does not release the Polar activation slot.</p>
 <h2>Verify a download</h2><p>The current SHA-256 is published with the <a href="downloads/Kilim-Windows-0.3.0-beta-win-x64.zip.sha256" download>checksum file</a>. In PowerShell, run this in the folder containing the downloaded ZIP and compare the values:</p><pre>Get-FileHash -LiteralPath '.\Kilim-Windows-0.3.0-beta-win-x64.zip' -Algorithm SHA256</pre>
-</main><footer class="footer wrap"><p>Original Kilim and artwork by <a href="https://github.com/yusufyilmazfr/kilim" target="_blank" rel="noopener noreferrer">Yusuf Yılmaz</a>. Independent Windows adaptation.</p><nav aria-label="Footer"><a href="privacy.html">Privacy</a><a href="credits.html">Credits</a><a href="releases.html">Releases</a></nav></footer></body></html>
+</main><footer class="footer wrap"><p>Kilim for Windows · Independent Windows adaptation.</p><nav aria-label="Footer"><a href="privacy.html">Privacy</a><a href="credits.html">Credits</a><a href="releases.html">Releases</a></nav></footer></body></html>
